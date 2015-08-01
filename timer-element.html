@@ -1,0 +1,39 @@
+<link rel="import"
+      href="bower_components/polymer/polymer.html">
+
+<dom-module is="timer-element">
+
+  <template>
+    <button on-click="startTimer">Start</button>
+    Timer : <span>{{time}}</span>
+  </template>
+
+  <script>
+    Timer = require('./timer.js');
+    //timer = new Timer;
+    
+    // register a new element called timer-element
+    Polymer({
+      is: "timer-element",
+      properties: {
+        time: String,
+        notify: true
+      },
+      // add a callback to the element's prototype
+      ready: function() {
+       this.time = 0;
+       this.timer = new Timer;
+       
+       function timeChanged() {
+         this.time = this.timer.time;
+       }
+       
+       this.timer.onTimeChanged(timeChanged.bind(this))
+      },
+      startTimer: function() {
+        this.timer.startTimer();
+      }
+    });
+  </script>
+  
+</dom-module>
