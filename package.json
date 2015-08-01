@@ -1,0 +1,22 @@
+{
+  "name": "time-tracker",
+  "version": "0.1.0",
+  "description": "An app to track your time",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Benoit-Vasseur/time-tracker.git"
+  },
+  "author": "Benoit Vasseur",
+  "license": "Apache v2",
+  "bugs": {
+    "url": "https://github.com/Benoit-Vasseur/time-tracker/issues"
+  },
+  "homepage": "https://github.com/Benoit-Vasseur/time-tracker",
+  "devDependencies": {
+    "electron-prebuilt": "^0.30.2"
+  }
+}
