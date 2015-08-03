@@ -4,34 +4,74 @@
 <dom-module is="timer-element">
 
   <template>
-    <button on-click="startTimer">Start</button>
-    Timer : <span>{{time}}</span>
+    <div>
+      <button on-click="startTimer">Start</button>
+      Timer : <span>{{time}}</span>
+      <select id="project" on-change="projectChanged">
+        <option value="">-- Select a project --</option>
+        <template is="dom-repeat" items="{{projects}}">
+          <option value="{{item.project_id}}">{{item.name}}</option>
+        </template>
+      </select>
+      <select id="task">
+        <template is="dom-repeat" items="{{project_tasks}}">
+          <option value="{{item.task_id}}">{{item.name}}</option>
+        </template>
+      </select>
+    </div>
   </template>
 
   <script>
-    Timer = require('./timer.js');
-    //timer = new Timer;
+    'use strict';
+    var Timer = require('./timer.js');
     
     // register a new element called timer-element
     Polymer({
       is: "timer-element",
       properties: {
         time: String,
-        notify: true
+        projects: {
+          type: Object,
+          notify: true
+        },
+        tasks: {
+          type: Object,
+          notify: true
+        }
       },
       // add a callback to the element's prototype
       ready: function() {
        this.time = 0;
        this.timer = new Timer;
+       this.project_tasks = []
        
        function timeChanged() {
          this.time = this.timer.time;
        }
        
        this.timer.onTimeChanged(timeChanged.bind(this))
+       
+       this.projects = [];
       },
       startTimer: function() {
         this.timer.startTimer();
+      },
+      projectChanged: function() {
+        let selectedProjectId = this.$.project.value
+        
+        if(selectedProjectId !== undefined && selectedProjectId !== "") {
+          let selectProject = this.projects.filter(function(project) { return project.project_id == selectedProjectId })[0]
+          let tasks_ids = selectProject.tasks.map(function(task) { return task.task_id})
+        
+          this.project_tasks = this.tasks.filter(function(task) {
+            if(tasks_ids.indexOf(task.task_id) == -1)
+              return false;
+            else
+              return true;
+          });
+        } else {
+          this.project_tasks = [];
+        }
       }
     });
   </script>
