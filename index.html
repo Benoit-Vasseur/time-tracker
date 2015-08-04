@@ -7,52 +7,52 @@
 	<body>
 		<script>
 			"use strict";
-			
+
 			var FreshBooks 	= require("freshbooks");
 			var jsonfile 	= require('jsonfile');
-			
+
 			var task_file = 'freshbooks_data/tasks.json';
 			var project_file = 'freshbooks_data/projects.json';
 			var credentials_file = 'freshbooks_data/credentials.json'
-			
+
 			var tasks = jsonfile.readFileSync(task_file);
 			console.log('tasks', tasks);
-			
+
 			var projects = jsonfile.readFileSync(project_file);
 			console.log('projects', projects);
 
 		</script>
-		
+
 		<timer-element></timer-element>
 		<timer-element></timer-element>
-		<button onclick="freshbooksSynchro()">Grap freshbooks infos</button>
-		
+		<button onclick="freshbooksSynchro()">Grab Freshbooks data</button>
+
 		<script>
 			"use strict"
-			
+
 			var timerElements = document.getElementsByTagName('timer-element');
 			console.log('timerElements', timerElements);
-			
+
 			for(let i = 0; i < timerElements.length; i++) {
 				timerElements[i].setAttribute('projects', JSON.stringify(projects));
 				timerElements[i].setAttribute('tasks', JSON.stringify(tasks));
 			}
-			
+
 			function freshbooksSynchro() {
-				
+
 				var credentials = jsonfile.readFileSync(credentials_file);
-				
+
 				var freshbooks 	= new FreshBooks(credentials["api_url"], credentials["api_token"]);
-				
+
 				var t = new freshbooks.Task();
-				
+
 				t.list(function(error, tasks) {
 					jsonfile.writeFileSync(task_file, tasks);
 					console.log(tasks);
 				});
-				
+
 				var p = new freshbooks.Project();
-				
+
 				p.list(function(error, projects) {
 					jsonfile.writeFileSync(project_file, projects);
 					console.log(projects);
@@ -61,5 +61,5 @@
 
 		</script>
 	</body>
-	
+
 </html>
