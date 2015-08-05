@@ -12,7 +12,7 @@
 
 			var FreshBooks 	= require("freshbooks");
 			var jsonfile 	= require('jsonfile');
-			
+
 			var task_file 		 = 'freshbooks_data/tasks.json';
 			var project_file 	 = 'freshbooks_data/projects.json';
 			var credentials_file = 'freshbooks_data/credentials.json'
@@ -23,8 +23,12 @@
 			var projects = jsonfile.readFileSync(project_file);
 			console.log('projects', projects);
 
+			var credentials = jsonfile.readFileSync(credentials_file);
+
+			var freshbooks 	= new FreshBooks(credentials["api_url"], credentials["api_token"]);
+
 		</script>
-		
+
   <paper-header-panel class="flex">
     <paper-toolbar>
       	<div>Timer App</div>
@@ -35,7 +39,7 @@
 		<timer-element></timer-element>
 	</div>
   </paper-header-panel>
-		
+
 		<script>
 			"use strict"
 
@@ -46,20 +50,16 @@
 				timerElements[i].setAttribute('projects', JSON.stringify(projects));
 				timerElements[i].setAttribute('tasks', JSON.stringify(tasks));
 			}
-			
+
 			function createTimerElement() {
 				var timerElement = document.createElement('timer-element');
 				timerElement.setAttribute('projects', JSON.stringify(projects));
 				timerElement.setAttribute('tasks', JSON.stringify(tasks));
-				
+
 				document.getElementById('timer-zone').appendChild(timerElement);
 			}
-			
+
 			function freshbooksSynchro() {
-
-				var credentials = jsonfile.readFileSync(credentials_file);
-
-				var freshbooks 	= new FreshBooks(credentials["api_url"], credentials["api_token"]);
 				var t = new freshbooks.Task();
 
 				t.list(function(error, tasks) {

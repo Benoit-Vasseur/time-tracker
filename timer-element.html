@@ -21,9 +21,9 @@
           <option value="{{item.task_id}}">{{item.name}}</option>
         </template>
       </select>
-      <button>Push</button>
+      <button on-click="pushToFreshbooks">Push</button>
       <div>
-        <textarea style="width:100%; margin-top: 5px;" id="description"></textarea>
+        <textarea style="width:100%; margin-top: 5px;" id="notes"></textarea>
       <div>
     </div>
   </template>
@@ -31,7 +31,7 @@
   <script>
     'use strict';
     var Timer = require('./timer.js');
-    
+
     // register a new element called timer-element
     Polymer({
       is: "timer-element",
@@ -51,11 +51,7 @@
        this.time = 0;
        this.timer = new Timer;
        this.project_tasks = []
-       
-       function timeChanged() {
-         this.time = this.timer.time;
-       }
-       
+
        this.projects = [];
       },
       startTimer: function() {
@@ -76,28 +72,28 @@
         let h, m, s;
         h = m = s = 0;
       	let newTime = '';
-        
+
         function pad(num, size) {
         	var s = "0000" + num;
         	return s.substr(s.length - size);
         }
-      
+
       	h = Math.floor( time / (60 * 60 * 1000) );
       	time = time % (60 * 60 * 1000);
       	m = Math.floor( time / (60 * 1000) );
       	time = time % (60 * 1000);
       	s = Math.floor( time / 1000 );
-        
+
         newTime = pad(h, 2) + ':' + pad(m, 2) + ':' + pad(s, 2);
         return newTime;
       },
       projectChanged: function() {
         let selectedProjectId = this.$.project.value
-        
+
         if(selectedProjectId !== undefined && selectedProjectId !== "") {
           let selectProject = this.projects.filter(function(project) { return project.project_id == selectedProjectId })[0]
           let tasks_ids = selectProject.tasks.map(function(task) { return task.task_id})
-        
+
           this.project_tasks = this.tasks.filter(function(task) {
             if(tasks_ids.indexOf(task.task_id) == -1)
               return false;
@@ -107,8 +103,20 @@
         } else {
           this.project_tasks = [];
         }
+      },
+      pushToFreshbooks: function() {
+        let timeEntry = new freshbooks.Time_Entry();
+        debugger;
+        timeEntry.project_id = this.$.project.value;
+        timeEntry.task_id = this.$.task.value;
+        timeEntry.hours = (this.timer.time() / (60 * 60 * 1000)).toFixed(8);
+        timeEntry.notes = this.$.notes.value;
+        timeEntry.create(function(error,response) {
+          console.log('error',error);
+          console.log('response',response);
+        });
       }
     });
   </script>
-  
+
 </dom-module>
