@@ -1,5 +1,11 @@
 # Read me
 
+[Trello Board](https://trello.com/b/7HJ1jnes/timer-app)
+Feel free to vote ;)
+
+Pull request are welcome.
+Please open an issue if you find a bug.
+
 ## Installation Step
 
 ### Install project
