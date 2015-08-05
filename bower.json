@@ -1,0 +1,22 @@
+{
+  "name": "time-tracker",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Benoit-Vasseur/time-tracker",
+  "authors": [
+    "benoit vasseur <bvasseur@siliconsalad.com>"
+  ],
+  "license": "Apache v2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.3",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.0.4"
+  }
+}

@@ -6,5 +6,7 @@ app.on('ready', function() {
 		width: 800,
 		height: 600
 	});
+	
+	mainWindow.openDevTools();
 	mainWindow.loadUrl('file://' + __dirname + '/index.html');
 });
