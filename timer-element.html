@@ -106,11 +106,11 @@
       },
       pushToFreshbooks: function() {
         let timeEntry = new freshbooks.Time_Entry();
-        debugger;
         timeEntry.project_id = this.$.project.value;
         timeEntry.task_id = this.$.task.value;
         timeEntry.hours = (this.timer.time() / (60 * 60 * 1000)).toFixed(8);
         timeEntry.notes = this.$.notes.value;
+
         timeEntry.create(function(error,response) {
           console.log('error',error);
           console.log('response',response);
