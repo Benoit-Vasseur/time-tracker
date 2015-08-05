@@ -4,8 +4,11 @@
 <dom-module is="timer-element">
 
   <template>
-    <div>
+    <div style="margin: 10px">
       <button on-click="startTimer">Start</button>
+      <button on-click="stopTimer">Stop</button>
+      <button on-click="resetTimer">Reset</button>
+      <input type="text" value="{{time}}"/>
       Timer : <span>{{time}}</span>
       <select id="project" on-change="projectChanged">
         <option value="">-- Select a project --</option>
@@ -18,6 +21,10 @@
           <option value="{{item.task_id}}">{{item.name}}</option>
         </template>
       </select>
+      <button>Push</button>
+      <div>
+        <textarea style="width:100%; margin-top: 5px;" id="description"></textarea>
+      <div>
     </div>
   </template>
 
@@ -49,12 +56,40 @@
          this.time = this.timer.time;
        }
        
-       this.timer.onTimeChanged(timeChanged.bind(this))
-       
        this.projects = [];
       },
       startTimer: function() {
-        this.timer.startTimer();
+        var clocktimer = setInterval(this.updateTime.bind(this), 1000);
+        this.timer.start();
+      },
+      stopTimer: function() {
+        this.timer.stop();
+      },
+      resetTimer: function() {
+        this.timer.reset();
+        this.updateTime();
+      },
+      updateTime: function() {
+        this.time = this.formatTime(this.timer.time());
+      },
+      formatTime: function(time) {
+        let h, m, s;
+        h = m = s = 0;
+      	let newTime = '';
+        
+        function pad(num, size) {
+        	var s = "0000" + num;
+        	return s.substr(s.length - size);
+        }
+      
+      	h = Math.floor( time / (60 * 60 * 1000) );
+      	time = time % (60 * 60 * 1000);
+      	m = Math.floor( time / (60 * 1000) );
+      	time = time % (60 * 1000);
+      	s = Math.floor( time / 1000 );
+        
+        newTime = pad(h, 2) + ':' + pad(m, 2) + ':' + pad(s, 2);
+        return newTime;
       },
       projectChanged: function() {
         let selectedProjectId = this.$.project.value

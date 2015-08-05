@@ -3,35 +3,31 @@
 
 class Timer {
 	constructor() {
-		this.start = undefined;
-		this.time = undefined;
-		this.callbacks = [];
+		this.startAt = 0;
+		this.lapTime = 0;
 	}
 	
-	startTimer() {
-		this.start = new Date;
-		
-		setInterval( this.updateTime.bind(this), 1000);
+	now() {
+		return (new Date()).getTime();
 	}
 	
-	 updateTime() {
-		this.time = Math.round((new Date - this.start) / 1000, 0);
-		this.timeChanged();
+	start() {
+		this.startAt	= this.startAt ? this.startAt : this.now();
 	}
 	
-	timeChanged() {
-		console.log(this.time);
-		this.callbacks.forEach(function(f) {
-			f();
-		})
+	 stop() {
+		 // If running, update elapsed time otherwise keep it
+		this.lapTime	= this.startAt ? this.lapTime + this.now() - this.startAt : this.lapTime;
+		this.startAt	= 0; // Paused
+	 }
+	
+	reset() {
+		this.lapTime = this.startAt = 0;
 	}
 	
-	onTimeChanged(f) {
-		this.callbacks.push(f);
+	time() {
+		return this.lapTime + (this.startAt ? this.now() - this.startAt : 0); 
 	}
 }
 
 module.exports = Timer
-
-//var timer = new Timer;
-//timer.startTimer();
