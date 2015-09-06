@@ -1,4 +1,5 @@
 # Read me
+![](http://benoit-vasseur.github.io/time-tracker/screenshot.png)
 
 [Trello Board](https://trello.com/b/7HJ1jnes/timer-app)
 Feel free to vote ;)
