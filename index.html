@@ -1,81 +1,48 @@
-<html>
-	<head>
-		<title></title>
-		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-		<link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
-		<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
-		<link rel="import" href="timer-element.html">
-	</head>
-	<body class="fullbleed layout vertical">
-		<script>
-			"use strict";
+<h1> Read me</h1>
+<img src="screenshot.png" width="800"/>
+<p>
+  <a href="https://trello.com/b/7HJ1jnes/timer-app">Trello Board</a>
+  Feel free to vote ;)
+</p>
 
-			var FreshBooks 	= require("freshbooks");
-			var jsonfile 	= require('jsonfile');
+<p>
+Pull request are welcome.
+Please open an issue if you find a bug.
+</p>
 
-			var task_file 		 = 'freshbooks_data/tasks.json';
-			var project_file 	 = 'freshbooks_data/projects.json';
-			var credentials_file = 'freshbooks_data/credentials.json'
+<h2>Installation Step</h2>
 
-			var tasks = jsonfile.readFileSync(task_file);
-			console.log('tasks', tasks);
+<h3>Install project</h3>
 
-			var projects = jsonfile.readFileSync(project_file);
-			console.log('projects', projects);
+``` <br>
+npm install <br>
+bower install <br>
+./node_modules/.bin/electron-rebuild <br>
+``` <br>
 
-			var credentials = jsonfile.readFileSync(credentials_file);
+<h3> Give your Freshbooks credentials</h3>
+Your Freshbooks credentials have to be in <em>freshbooks_data/credentials.json</em>
+``` <br>
+mkdir freshbooks_data <br>
+cd freshbooks_data <br>
+touch credentials.json <br>
+``` <br>
 
-			var freshbooks 	= new FreshBooks(credentials["api_url"], credentials["api_token"]);
+In your credential file put :
+```json <br>
+{ <br>
+  "api_url": "__YOUR_API_URL__", <br>
+  "api_token": "__YOUR_API_TOKEN__" <br>
+} <br>
+```
 
-		</script>
-
-  <paper-header-panel class="flex">
-    <paper-toolbar>
-      	<div>Timer App</div>
-	  	<button onclick="createTimerElement()">Nouveau timer</button>
-		<button onclick="freshbooksSynchro()">Grap freshbooks infos</button>
-    </paper-toolbar>
-	<div id="timer-zone">
-		<timer-element></timer-element>
-	</div>
-  </paper-header-panel>
-
-		<script>
-			"use strict"
-
-			var timerElements = document.getElementsByTagName('timer-element');
-			console.log('timerElements', timerElements);
-
-			for(let i = 0; i < timerElements.length; i++) {
-				timerElements[i].setAttribute('projects', JSON.stringify(projects));
-				timerElements[i].setAttribute('tasks', JSON.stringify(tasks));
-			}
-
-			function createTimerElement() {
-				var timerElement = document.createElement('timer-element');
-				timerElement.setAttribute('projects', JSON.stringify(projects));
-				timerElement.setAttribute('tasks', JSON.stringify(tasks));
-
-				document.getElementById('timer-zone').appendChild(timerElement);
-			}
-
-			function freshbooksSynchro() {
-				var t = new freshbooks.Task();
-
-				t.list(function(error, tasks) {
-					jsonfile.writeFileSync(task_file, tasks);
-					console.log(tasks);
-				});
-
-				var p = new freshbooks.Project();
-
-				p.list(function(error, projects) {
-					jsonfile.writeFileSync(project_file, projects);
-					console.log(projects);
-				});
-			}
-
-		</script>
-	</body>
-
-</html>
+<h3>Grab your Freshbooks data</h3>
+``` <br>
+npm start <br>
+``` <br>
+<ul>
+<li>click the button 'Grab Freshbooks data'</li>
+<li>quit the application (cmd+q)</li>
+<li>npm start</li>
+<li>Hello timer :)</li>
+</ul>
